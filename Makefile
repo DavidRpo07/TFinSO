@@ -1,21 +1,31 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -O2 -std=c17 -Iinclude
-BUILD_DIR=build
-SRC=src/main.c src/fs.c
-OBJ=$(SRC:src/%.c=$(BUILD_DIR)/%.o)
-BIN=$(BUILD_DIR)/gsea
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c11 -Iinclude
+LDFLAGS =
+OBJDIR = build
+SRCDIR = src
+
+SRC = $(SRCDIR)/main.c \
+      $(SRCDIR)/verdir.c \
+      $(SRCDIR)/pipeline.c \
+      $(SRCDIR)/compress/rle.c \
+      $(SRCDIR)/crypto/vigenere.c
+
+OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+BIN = gsea
+
+# Regla principal
+all: $(BIN)
 
 $(BIN): $(OBJ)
-	@mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/%.o: src/%.c include/gsea.h
-	@mkdir -p $(BUILD_DIR)
+# Compilar cada .c en .o dentro de build/
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean run
+# Limpieza
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(OBJDIR) $(BIN)
 
-run: $(BIN)
-	$(BIN)
+.PHONY: all clean

@@ -6,9 +6,11 @@ SRCDIR = src
 
 SRC = $(SRCDIR)/main.c \
       $(SRCDIR)/verdir.c \
-      $(SRCDIR)/pipeline.c \
+      $(SRCDIR)/procesar.c \
       $(SRCDIR)/compress/rle.c \
-      $(SRCDIR)/crypto/vigenere.c
+      $(SRCDIR)/compress/lzw.c \
+      $(SRCDIR)/crypto/vigenere.c \
+      $(SRCDIR)/crypto/des.c
 
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 BIN = gsea

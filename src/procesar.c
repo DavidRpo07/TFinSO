@@ -9,8 +9,10 @@
 #include "pipeline.h"              
 #include "rle.h"
 #include "lzw.h"
+#include "huffman.h"
 #include "vigenere.h"
 #include "des.h"
+#include "aes.h"
 
 int gsea_process_file(const gsea_opts_t *opt){
     // 1. leer archivo completo de entradaf
@@ -72,6 +74,13 @@ int gsea_process_file(const gsea_opts_t *opt){
                     free(inbuf);
                     return -1;
                 }
+            } else if (strcmp(alg, "huffman") == 0){
+                if (huffman_compress(cur, curlen, &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo Huffman compress\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
             } else {
                 fprintf(stderr, "error: algoritmo de compresión '%s' no soportado\n", alg);
                 if (cur != inbuf) free(cur);
@@ -90,6 +99,13 @@ int gsea_process_file(const gsea_opts_t *opt){
             } else if (strcmp(alg, "lzw") == 0){
                 if (lzw_decompress(cur, curlen, &tmp, &tmplen) != 0){
                     fprintf(stderr, "error: fallo LZW decompress\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
+            } else if (strcmp(alg, "huffman") == 0){
+                if (huffman_decompress(cur, curlen, &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo Huffman decompress\n");
                     if (cur != inbuf) free(cur);
                     free(inbuf);
                     return -1;
@@ -126,6 +142,15 @@ int gsea_process_file(const gsea_opts_t *opt){
                     free(inbuf);
                     return -1;
                 }
+            } else if (strcmp(alg, "aes") == 0){
+                if (aes_encrypt(cur, curlen,
+                                (const uint8_t*)opt->key, strlen(opt->key),
+                                &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo AES encrypt\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
             } else {
                 fprintf(stderr, "error: algoritmo de encriptación '%s' no soportado\n", alg);
                 if (cur != inbuf) free(cur);
@@ -154,6 +179,15 @@ int gsea_process_file(const gsea_opts_t *opt){
                                 (const uint8_t*)opt->key, strlen(opt->key),
                                 &tmp, &tmplen) != 0){
                     fprintf(stderr, "error: fallo DES decrypt\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
+            } else if (strcmp(alg, "aes") == 0){
+                if (aes_decrypt(cur, curlen,
+                                (const uint8_t*)opt->key, strlen(opt->key),
+                                &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo AES decrypt\n");
                     if (cur != inbuf) free(cur);
                     free(inbuf);
                     return -1;

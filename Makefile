@@ -9,8 +9,10 @@ SRC = $(SRCDIR)/main.c \
       $(SRCDIR)/procesar.c \
       $(SRCDIR)/compress/rle.c \
       $(SRCDIR)/compress/lzw.c \
+      $(SRCDIR)/compress/huffman.c \
       $(SRCDIR)/crypto/vigenere.c \
-      $(SRCDIR)/crypto/des.c
+      $(SRCDIR)/crypto/des.c \
+      $(SRCDIR)/crypto/aes.c
 
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 BIN = gsea

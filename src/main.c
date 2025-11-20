@@ -29,7 +29,7 @@ static int parse_args(int argc, char **argv, gsea_opts_t *opt){
         case 1001: opt->enc_alg  = optarg; break;
         default:
             fprintf(stderr,
-              "Uso: %s -[c|d][e|u] -i in -o out [--comp-alg rle|lzw] [--enc-alg vigenere|des] [-k clave]\n",
+              "Uso: %s -[c|d][e|u] -i in -o out [--comp-alg rle|lzw|huffman] [--enc-alg vigenere|des|aes] [-k clave]\n",
                argv[0]);
             return -1;
         }

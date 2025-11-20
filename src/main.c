@@ -52,16 +52,18 @@ int main(int argc, char **argv){
     }
 
     if (!isdir){
-    if (gsea_process_file(&opt) != 0){
-        fprintf(stderr, "error procesando archivo\n");
-        return 1;
-    }
-    return 0;
+        if (gsea_process_file(&opt) != 0){
+            fprintf(stderr, "error procesando archivo\n");
+            return 1;
+        }
+        return 0;
     } else {
-        // CASO 2: directorio
-        // solo listar
+        // Directorio: procesar concurrentemente cada archivo regular
         printf("Directorio detectado: '%s'\n", opt.in_path);
-        if (fs_list_dir(opt.in_path) != 0) return 1;
+        if (fs_process_dir_concurrent(&opt) != 0){
+            fprintf(stderr, "error procesando directorio\n");
+            return 1;
+        }
     }
     return 0;
 }

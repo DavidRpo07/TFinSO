@@ -8,7 +8,9 @@
 #include "gsea.h"
 #include "pipeline.h"              
 #include "rle.h"
+#include "lzw.h"
 #include "vigenere.h"
+#include "des.h"
 
 int gsea_process_file(const gsea_opts_t *opt){
     // 1. leer archivo completo de entradaf
@@ -55,29 +57,45 @@ int gsea_process_file(const gsea_opts_t *opt){
         size_t tmplen = 0;
 
         if (op == 'c'){             // comprimir
-            if (strcmp(opt->comp_alg ? opt->comp_alg : "rle", "rle") == 0){
+            const char *alg = opt->comp_alg ? opt->comp_alg : "rle";
+            if (strcmp(alg, "rle") == 0){
                 if (rle_compress(cur, curlen, &tmp, &tmplen) != 0){
                     fprintf(stderr, "error: fallo RLE compress\n");
                     if (cur != inbuf) free(cur);
                     free(inbuf);
                     return -1;
                 }
+            } else if (strcmp(alg, "lzw") == 0){
+                if (lzw_compress(cur, curlen, &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo LZW compress\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
             } else {
-                fprintf(stderr, "error: algoritmo de compresión no soportado\n");
+                fprintf(stderr, "error: algoritmo de compresión '%s' no soportado\n", alg);
                 if (cur != inbuf) free(cur);
                 free(inbuf);
                 return -1;
             }
         } else if (op == 'd'){      // descomprimir
-            if (strcmp(opt->comp_alg ? opt->comp_alg : "rle", "rle") == 0){
+            const char *alg = opt->comp_alg ? opt->comp_alg : "rle";
+            if (strcmp(alg, "rle") == 0){
                 if (rle_decompress(cur, curlen, &tmp, &tmplen) != 0){
                     fprintf(stderr, "error: fallo RLE decompress\n");
                     if (cur != inbuf) free(cur);
                     free(inbuf);
                     return -1;
                 }
+            } else if (strcmp(alg, "lzw") == 0){
+                if (lzw_decompress(cur, curlen, &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo LZW decompress\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
             } else {
-                fprintf(stderr, "error: algoritmo de compresión no soportado para -d\n");
+                fprintf(stderr, "error: algoritmo de compresión '%s' no soportado para -d\n", alg);
                 if (cur != inbuf) free(cur);
                 free(inbuf);
                 return -1;
@@ -89,8 +107,8 @@ int gsea_process_file(const gsea_opts_t *opt){
                 free(inbuf);
                 return -1;
             }
-            // por ahora solo vigenere
-            if (strcmp(opt->enc_alg ? opt->enc_alg : "vigenere", "vigenere") == 0){
+            const char *alg = opt->enc_alg ? opt->enc_alg : "vigenere";
+            if (strcmp(alg, "vigenere") == 0){
                 if (vig_encrypt(cur, curlen,
                                 (const uint8_t*)opt->key, strlen(opt->key),
                                 &tmp, &tmplen) != 0){
@@ -99,8 +117,17 @@ int gsea_process_file(const gsea_opts_t *opt){
                     free(inbuf);
                     return -1;
                 }
+            } else if (strcmp(alg, "des") == 0){
+                if (des_encrypt(cur, curlen,
+                                (const uint8_t*)opt->key, strlen(opt->key),
+                                &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo DES encrypt\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
             } else {
-                fprintf(stderr, "error: algoritmo de encriptación no soportado\n");
+                fprintf(stderr, "error: algoritmo de encriptación '%s' no soportado\n", alg);
                 if (cur != inbuf) free(cur);
                 free(inbuf);
                 return -1;
@@ -112,7 +139,8 @@ int gsea_process_file(const gsea_opts_t *opt){
                 free(inbuf);
                 return -1;
             }
-            if (strcmp(opt->enc_alg ? opt->enc_alg : "vigenere", "vigenere") == 0){
+            const char *alg = opt->enc_alg ? opt->enc_alg : "vigenere";
+            if (strcmp(alg, "vigenere") == 0){
                 if (vig_decrypt(cur, curlen,
                                 (const uint8_t*)opt->key, strlen(opt->key),
                                 &tmp, &tmplen) != 0){
@@ -121,8 +149,17 @@ int gsea_process_file(const gsea_opts_t *opt){
                     free(inbuf);
                     return -1;
                 }
+            } else if (strcmp(alg, "des") == 0){
+                if (des_decrypt(cur, curlen,
+                                (const uint8_t*)opt->key, strlen(opt->key),
+                                &tmp, &tmplen) != 0){
+                    fprintf(stderr, "error: fallo DES decrypt\n");
+                    if (cur != inbuf) free(cur);
+                    free(inbuf);
+                    return -1;
+                }
             } else {
-                fprintf(stderr, "error: algoritmo de encriptación no soportado para -u\n");
+                fprintf(stderr, "error: algoritmo de encriptación '%s' no soportado para -u\n", alg);
                 if (cur != inbuf) free(cur);
                 free(inbuf);
                 return -1;

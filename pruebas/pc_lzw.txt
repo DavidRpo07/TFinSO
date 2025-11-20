@@ -1,0 +1,1 @@
+Este es un texto de prueba para todos los algoritmos implementados. Contiene repeticiones como AAAA BBBB CCCC y patrones de texto normales.

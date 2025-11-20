@@ -23,5 +23,9 @@ typedef struct {
 int fs_is_dir(const char *path);              // 1 si dir, 0 si no, -1 error
 int fs_copy_file(const char *infile, const char *outfile);
 int fs_list_dir(const char *dirpath);
+// Nuevo: asegurar que el directorio de salida exista (crear si no existe)
+int fs_ensure_dir(const char *dirpath);
+// Nuevo: procesar concurrentemente todos los archivos regulares dentro de un directorio
+int fs_process_dir_concurrent(const gsea_opts_t *opt);
 
 #endif

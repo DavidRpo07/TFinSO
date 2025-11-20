@@ -29,7 +29,7 @@ static int parse_args(int argc, char **argv, gsea_opts_t *opt){
         case 1001: opt->enc_alg  = optarg; break;
         default:
             fprintf(stderr,
-              "Uso: %s -[c|d][e|u] -i in -o out [--comp-alg rle|lzw] [--enc-alg vigenere] [-k clave]\n",
+              "Uso: %s -[c|d][e|u] -i in -o out [--comp-alg rle|lzw] [--enc-alg vigenere|des] [-k clave]\n",
                argv[0]);
             return -1;
         }
@@ -52,16 +52,18 @@ int main(int argc, char **argv){
     }
 
     if (!isdir){
-    if (gsea_process_file(&opt) != 0){
-        fprintf(stderr, "error procesando archivo\n");
-        return 1;
-    }
-    return 0;
+        if (gsea_process_file(&opt) != 0){
+            fprintf(stderr, "error procesando archivo\n");
+            return 1;
+        }
+        return 0;
     } else {
-        // CASO 2: directorio
-        // solo listar
+        // Directorio: procesar concurrentemente cada archivo regular
         printf("Directorio detectado: '%s'\n", opt.in_path);
-        if (fs_list_dir(opt.in_path) != 0) return 1;
+        if (fs_process_dir_concurrent(&opt) != 0){
+            fprintf(stderr, "error procesando directorio\n");
+            return 1;
+        }
     }
     return 0;
 }

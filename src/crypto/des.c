@@ -1,22 +1,8 @@
-/*
- * Implementación completa del algoritmo DES (Data Encryption Standard)
- * 
- * Características:
- * - Key schedule completo con PC-1, PC-2 y rotaciones
- * - 16 rondas Feistel con función F completa
- * - Permutaciones inicial (IP) y final (FP)
- * - S-boxes estándar DES
- * - Expansión E y permutación P
- * - Modo ECB con padding PKCS#7
- */
 
 #include "des.h"
 #include <stdlib.h>
 #include <string.h>
 
-// ============================================================================
-// TABLAS DE PERMUTACIÓN Y S-BOXES DES
-// ============================================================================
 
 // Permutación inicial (IP)
 static const int IP[64] = {
@@ -156,10 +142,6 @@ static const int S[8][4][16] = {
     }
 };
 
-// ============================================================================
-// FUNCIONES AUXILIARES DE MANIPULACIÓN DE BITS
-// ============================================================================
-
 // Obtener bit en posición pos (1-indexed como en las tablas DES)
 static inline int get_bit(const uint8_t *data, int pos) {
     int byte_idx = (pos - 1) / 8;
@@ -198,10 +180,6 @@ static void rotate_left_28(uint8_t *data, int shifts) {
         set_bit(data, 28, first_bit);
     }
 }
-
-// ============================================================================
-// KEY SCHEDULE - GENERACIÓN DE SUBCLAVES
-// ============================================================================
 
 static void generate_subkeys(const uint8_t *key, uint8_t subkeys[16][6]) {
     uint8_t permuted_key[7];  // 56 bits
@@ -243,10 +221,6 @@ static void generate_subkeys(const uint8_t *key, uint8_t subkeys[16][6]) {
     }
 }
 
-// ============================================================================
-// FUNCIÓN F DE FEISTEL
-// ============================================================================
-
 static void feistel_f(const uint8_t *R, const uint8_t *subkey, uint8_t *output) {
     uint8_t expanded[6];  // 48 bits
     
@@ -284,9 +258,6 @@ static void feistel_f(const uint8_t *R, const uint8_t *subkey, uint8_t *output) 
     permute(sbox_out, output, P, 32);
 }
 
-// ============================================================================
-// CIFRADO/DESCIFRADO DE UN BLOQUE DE 64 BITS
-// ============================================================================
 
 static void des_block(const uint8_t *input, const uint8_t subkeys[16][6], 
                       uint8_t *output, int decrypt) {

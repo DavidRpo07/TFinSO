@@ -1,1 +1,0 @@
-Probando combinacion de Huffman y AES con mas texto para obtener mejor compresion. Este es un texto mas largo que debe comprimirse y cifrarse correctamente.

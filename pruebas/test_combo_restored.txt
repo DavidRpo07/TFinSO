@@ -1,1 +1,0 @@
-Test de compresion LZW y cifrado DES combinados

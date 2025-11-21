@@ -2,42 +2,11 @@ LEY 769 DE 2002 (Agosto 6) "Por la cual se expide el Código Nacional de Tránsi
 PODER PÚBLICO - RAMA LEGISLATIVA Ver la Exposición de Motivos, Ley 769 de 2002 T I T U L O I DISPOSICIONES GENERALES 
 CAPITULO I Principios 
 ARTÍCULO 1°. ÁMBITO DE APLICACIÓN Y PRINCIPIOS.
-Las normas del presente Código rigen en todo el territorio naciona l y regulan la circulación de los peatones, usuarios, pasajeros, conductores, motocic listas, ciclistas, agentes de tránsito, y vehículos por las vías públicas o priva das que están abiertas al público, o en las vías privadas, que internamente circulen v ehículos; así como la actuación y procedimientos de las autoridades de tránsito.
-En desarrollo de lo dispuesto por el artículo 24 de la Constitución Política, todo colombiano tiene derecho a circular libremente por el territorio nacional, pero está sujeto a la intervención y reglamentación de las au toridades para garantía de la seguridad y comodidad de los habitantes, especialme nte de los peatones y de los discapacitados físicos y mentales, para la preserva ción de un ambiente sano y la protección del uso común del espacio público.
-Le corresponde al Ministerio de Transporte como aut oridad suprema de tránsito definir, orientar, vigilar e inspeccionar la ejecuc ión de la política nacional en materia de tránsito.
-Las autoridades de tránsito promoverán la difusión y el conocimiento de las disposiciones contenidas en este código.
-Los principios rectores de este código son: segurid ad de los usuarios, calidad, oportunidad, cubrimiento, libertad de acceso, plena identificación, libre circulación, educación y descentralización.
-ARTÍCULO 2°.
-DEFINICIONES.
-Para la aplicación e interpretación de este código, se tendrán en cuenta las siguientes definic iones: Acera o andén: Franja longitudinal de la vía urbana , destinada exclusivamente a la circulación de peatones, ubicada a los costados de ésta.
-Accesibilidad: Condición esencial de los servicios públicos que permite en cualquier espacio o ambiente exterior o interior el fácil disfrute de dicho servicio por parte de toda la población.
-Accidente de tránsito: Evento generalmente involunt ario, generado al menos por un vehículo en movimiento, que causa daños a person as y bienes involucrados en él e igualmente afecta la normal circulación de los vehículos que se movilizan por la vía o vías comprendidas en el lugar o dentro de la zona de influencia del hecho.
-Acompañante: Persona que viaja con el conductor de un vehículo automotor.
-Adelantamiento: Maniobra mediante la cual un vehícu lo se pone delante de otro vehículo que lo antecede en el mismo carril de una calzada.
-Agente de tránsito: Todo funcionario o persona civi l identificada que está investida de autoridad para regular la circulación vehicular y peatonal y vigilar, controlar e intervenir en el cumplimiento de las normas de trán sito y transporte en cada uno de los entes territoriales.
-Alcoholemia: Cantidad de alcohol que tiene una pers ona en determinado momento en su sangre.
-Alcoholometría: Examen o prueba de laboratorio, o p or medio técnico que determina el nivel de alcohol etílico en la sangre.
-Alcoholuria: Examen o prueba de laboratorio, o por otro medio técnico que determina el nive l de alcohol etílico en la orina.
-Alcohosensor: Sistema para determinar alcohol en ai re exhalado.
-Año del modelo: Año que asigna el fabricante o ensa mblador al modelo del vehículo, de acuerdo con la declaración de despacho para consumo.
-Aprendiz: Persona que recibe de un instructor, técn icas de conducción de vehículos automotores y motocicletas.
-Automóvil antiguo: Automotor que haya cumplido 35 a ños y que conserve sus especificaciones y características originales de fá brica, presentación y funcionamiento.
-Automóvil clásico: Automotor que haya cumplido 50 a ños y que además de conservar sus especificaciones y características or iginales de fábrica, presentación y funcionamiento, corresponda a marcas , series y modelos catalogados internacionalmente como tales.
-Autopista: Vía de calzadas separadas, cada una con dos (2) o más carriles, control total de acceso y salida, con intersecciones en des nivel o mediante entradas y salidas directas a otras carreteras y con control d e velocidades mínimas y máximas por carril.
+riles, control total de acceso y salida, con intersecciones en des nivel o mediante entradas y salidas directas a otras carreteras y con control d e velocidades mínimas y máximas por carril.
 Bahía de estacionamiento: Parte complementaria de l a estructura de la vía utilizada como zona de transición entre la calzada y el andén, destinada al estacionamiento de vehículos.
 Barrera para control vehicular: Dispositivo dotado de punzones pinchallantas para uso en retenes y puesto de control de las fuerzas m ilitares, la Policía Nacional, las autoridades de tránsito y transporte.
-Berma: Parte de la estructura de la vía, destinada al soporte lateral de la calzada para el tránsito de peatones, semovientes y ocasion almente al estacionamiento de vehículos y tránsito de vehículos de emergencia.
-Bicicleta: Vehículo no motorizado de dos (2) o más ruedas en línea, el cual se desplaza por el esfuerzo de su conductor accionando por medio de pedales.
-Bocacalle: Embocadura de una calle en una intersecc ión.
-Bus: Vehículo automotor destinad o al transporte co lectivo de personas y sus equipajes, debidamente registrado conforme a las no rmas y características especiales vigentes.
-Buseta: Vehículo destinado al transporte de persona s con capacidad de 20 a 30 pasajeros y distancia entre ejes inferiores a 4 met ros.
-Cabina: Recinto separado de la carrocería de un veh ículo destinado al conductor.
-Calzada: Zona de la vía destinada a la circulación de vehículos.
-Carreteable: Vía sin pavimentar destinada a la circ ulación de vehículos.
-Camión: Vehículo automotor que por su tamaño y dest inación se usa para transportar carga.
-Camioneta picó: Vehículo automotor destinado al tra nsporte de personas en la cabina y de carga en el platón.
-Camión tractor: Vehículo automotor destinado a arra strar uno o varios semirremolques o remolques, equipado con acople adecuad o para tal fin.
-Capacidad de pasajeros: Es el número de personas au torizado para ser transportados en un vehículo.
+Berma:dura de una calle en una intersecc ión.
+Bus: Vehícl número de personas au torizado para ser transportados en un vehículo.
 Capacidad de carga: Es el máximo tonelaje autorizad o en un vehículo, de tal forma que el peso bruto vehicular no exceda los lím ites establecidos.
 Carretera: vía cuya finalidad es permitir la circul ación de vehículos, con niveles adecuados de seguridad y comodidad.
 Carril: Parte de la calzada destinada al tránsito d e una sola fila de vehículos.

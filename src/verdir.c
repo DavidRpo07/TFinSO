@@ -12,47 +12,10 @@
 #include "gsea.h"
 #include "pipeline.h"
 
-/* -------- utilidades básicas de fs que ya tenías -------- */
-
 int fs_is_dir(const char *path){
     struct stat st;
     if (stat(path, &st) == -1) return -1;
     return S_ISDIR(st.st_mode) ? 1 : 0;
-}
-
-int fs_copy_file(const char *infile, const char *outfile){
-    int fd_in = open(infile, O_RDONLY);
-    if (fd_in == -1){ perror("open in"); return -1; }
-
-    int fd_out = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (fd_out == -1){ perror("open out"); close(fd_in); return -1; }
-
-    char buf[8192];
-    for(;;){
-        ssize_t n = read(fd_in, buf, sizeof(buf));
-        if (n < 0){
-            if (errno == EINTR) continue;
-            perror("read");
-            close(fd_in); close(fd_out);
-            return -1;
-        }
-        if (n == 0) break;
-        ssize_t escritos = 0;
-        while (escritos < n){
-            ssize_t m = write(fd_out, buf + escritos, n - escritos);
-            if (m < 0){
-                if (errno == EINTR) continue;
-                perror("write");
-                close(fd_in); close(fd_out);
-                return -1;
-            }
-            escritos += m;
-        }
-    }
-
-    if (close(fd_in)  == -1) perror("close in");
-    if (close(fd_out) == -1) perror("close out");
-    return 0;
 }
 
 int fs_list_dir(const char *dirpath){
@@ -95,8 +58,6 @@ int fs_ensure_dir(const char *dirpath){
     return 0;
 }
 
-/* -------- estructuras para el pool de hilos -------- */
-
 struct thread_arg {
     gsea_opts_t base;      // copia de opciones
     char in_file[4096];    // ruta completa de entrada
@@ -104,23 +65,21 @@ struct thread_arg {
 };
 
 struct pool_ctx {
-    struct thread_arg *args;  // array de trabajos (uno por archivo)
-    size_t count;             // número total de archivos
+    struct thread_arg *args;  
+    size_t count;             // para el número total de archivos
     size_t next;              // índice del próximo archivo a asignar
-    pthread_mutex_t lock;     // protege 'next'
+    pthread_mutex_t lock;     // protege 'next' para concurrencia
 };
-
-/* -------- worker de pool: un hilo procesa N archivos -------- */
 
 static void *thread_worker(void *ptr){
     struct pool_ctx *ctx = (struct pool_ctx*)ptr;
 
     for(;;){
-        // Tomar el siguiente índice disponible
+        // Toma el siguiente índice disponible
         pthread_mutex_lock(&ctx->lock);
         if (ctx->next >= ctx->count){
             pthread_mutex_unlock(&ctx->lock);
-            break; // no hay más archivos
+            break;
         }
         size_t idx = ctx->next++;
         pthread_mutex_unlock(&ctx->lock);
@@ -150,8 +109,6 @@ static void *thread_worker(void *ptr){
     return NULL;
 }
 
-/* -------- función principal de procesamiento concurrente -------- */
-
 int fs_process_dir_concurrent(const gsea_opts_t *opt){
     if (fs_ensure_dir(opt->out_path) != 0){
         return -1;
@@ -160,7 +117,7 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
     DIR *d = opendir(opt->in_path);
     if (!d){ perror("opendir in"); return -1; }
 
-    /* 1) Contar archivos regulares */
+    /// Contar archivos regulares
     size_t count = 0;
     struct dirent *de;
     while ((de = readdir(d))){
@@ -181,7 +138,7 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
 
     rewinddir(d);
 
-    /* 2) Preparar array de trabajos (uno por archivo) */
+    // Preparar array de los trabajos
     struct thread_arg *args = calloc(count, sizeof(*args));
     if (!args){
         perror("calloc args");
@@ -200,7 +157,7 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
         if (!S_ISREG(st.st_mode)) continue;
 
         struct thread_arg *a = &args[idx];
-        a->base = *opt; // copia superficial de opciones
+        a->base = *opt;
         snprintf(a->in_file,  sizeof(a->in_file),  "%s", full);
         snprintf(a->out_file, sizeof(a->out_file), "%s/%s",
                  opt->out_path, de->d_name);
@@ -213,7 +170,7 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
     }
     closedir(d);
 
-    // puede que count > idx si algunos se saltaron por errores; ajustar
+    // ajustar el conteo de archivos si algunos se saltaron por errores
     count = idx;
     if (count == 0){
         free(args);
@@ -221,7 +178,7 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
         return 0;
     }
 
-    /* 3) Calcular número de hilos: min( archivos, nucleos*4 ) */
+    // Calcular número de hilos 
     long cores = sysconf(_SC_NPROCESSORS_ONLN);
     if (cores < 1) cores = 1;
 
@@ -245,14 +202,13 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
     ctx.next  = 0;
     pthread_mutex_init(&ctx.lock, NULL);
 
-    /* 4) Crear los workers */
+    // Crear los hilos worker
     for (size_t i = 0; i < max_workers; i++){
         int err = pthread_create(&tids[i], NULL, thread_worker, &ctx);
         if (err != 0){
             fprintf(stderr,
                     "[pool] pthread_create fallo i=%zu: %s\n",
                     i, strerror(err));
-            // dejamos max_workers en el número realmente creado
             max_workers = i;
             break;
         } else {
@@ -262,7 +218,7 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
         }
     }
 
-    /* 5) Esperar a que todos los workers terminen */
+    //Esperar a que terminen
     int global_rc = 0;
     for (size_t i = 0; i < max_workers; i++){
         void *ret = NULL;
@@ -273,7 +229,6 @@ int fs_process_dir_concurrent(const gsea_opts_t *opt){
                     i, strerror(err));
             global_rc = -1;
         } else {
-            // no usamos rc por archivo aquí; cada hilo procesó varios
             fprintf(stderr,
                     "[join] worker i=%zu tid=%lu terminado\n",
                     i, (unsigned long)tids[i]);

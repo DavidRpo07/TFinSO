@@ -1,13 +1,3 @@
-/*
- * Implementación del algoritmo LZW (Lempel-Ziv-Welch)
- * Algoritmo de compresión sin pérdida basado en diccionario dinámico
- * 
- * Características:
- * - Diccionario de 12 bits (4096 entradas)
- * - Inicializado con 256 símbolos de un byte
- * - Códigos de salida empaquetados en bytes
- */
-
 #include "lzw.h"
 #include <stdlib.h>
 #include <string.h>
@@ -30,9 +20,6 @@ typedef struct {
     int len;
 } lzw_entry_t;
 
-// ============================================================================
-// FUNCIONES AUXILIARES PARA ESCRITURA/LECTURA DE BITS
-// ============================================================================
 
 typedef struct {
     uint8_t *data;
@@ -110,10 +97,6 @@ static int br_read_bits(bitreader_t *br, int nbits, uint32_t *out) {
     return 0;
 }
 
-// ============================================================================
-// COMPRESIÓN LZW
-// ============================================================================
-
 static lzw_node_t* create_node(int code, uint8_t byte) {
     lzw_node_t *node = calloc(1, sizeof(lzw_node_t));
     node->code = code;
@@ -183,9 +166,6 @@ int lzw_compress(const uint8_t *in, size_t n, uint8_t **out, size_t *outn) {
     return 0;
 }
 
-// ============================================================================
-// DESCOMPRESIÓN LZW
-// ============================================================================
 
 int lzw_decompress(const uint8_t *in, size_t n, uint8_t **out, size_t *outn) {
     if (!in || !out || !outn) return -1;
